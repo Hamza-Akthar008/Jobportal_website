@@ -1,0 +1,41 @@
+
+.background
+{
+   
+    background: url(../img/main.jpg) no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(2px);
+}
+.backgroundsty
+{
+    color: wheat;
+}
+.navmain
+{
+    font-size: 20px;
+   padding-left: 70px;
+}
+.navbtn
+{
+    margin-left:150px ;
+}
+.banner
+{
+    padding-bottom: 20%;
+}
+.background2
+{
+  
+ background:linear-gradient(#1644AD, #1644AD);
+   padding-bottom: 2%;
+}
+.footerback
+{
+    color: white;
+    background: #343a40;
+}
+.cardimg
+{
+ width: 100px;
+ 
+}
