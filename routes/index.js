@@ -6,7 +6,7 @@ const multer = require('multer');
 const e = require('connect-flash');
 const { json } = require('body-parser');
 const nodemailer = require("nodemailer");
-var fn = "";
+
 var session;
 const noofidperpage = 3;
 const storage = multer.diskStorage({
@@ -14,8 +14,8 @@ const storage = multer.diskStorage({
         cb(null, "public/databaseimg");
     },
     filename: (req, file, cb) => {
-        fn = Date.now() + path.extname(file.originalname);
-        cb(null, fn);
+    
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 })
 const upload = multer({ storage: storage });
