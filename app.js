@@ -4,7 +4,6 @@ const routes =require('./routes/index')
 var bodyparser=require('body-parser');
 
 
-app.use(cookieParser());
 app.set("view engine","ejs");
 app.use('/',express.static('./public'));
 app.use('/css',express.static('./public/css'));
