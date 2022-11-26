@@ -1,45 +1,33 @@
 const express = require('express');
 const routes = express.Router();
 const path = require('path');
-var mysql = require('mysql');
-const multer = require('multer');
-const e = require('connect-flash');
-const { json } = require('body-parser');
-
+const multer =require('multer');
 const controller =require("../Controllers/controllers.js");
-var session;
-const noofidperpage = 3;
+var user_email_address;
+var fn="";
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public/databaseimg");
     },
     filename: (req, file, cb) => {
-    
-        cb(null, Date.now() + path.extname(file.originalname));
+    fn=Date.now() + path.extname(file.originalname)
+        cb(null,fn );
     }
 })
 const upload = multer({ storage: storage });
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'job_site'
-})
 
-
-var code;
-var user_email_address;
-
-routes.get("/",(req,res)=>controller.signin(req,res));
 routes.post('/', function(request, response, next){
     controller.home(request,response);
-    });
+});
+routes.get("/",(req,res)=>controller.signin(req,res));
 routes.get('/about',(req,res)=>controller.about(req,res));
 routes.post('/signout',(req,res)=>controller.logout(req,res));
 routes.post('/search',(req,res)=>controller.search(req,res));
-
-
-
+routes.get('/addjob',(req,res)=>controller.showaddjob(req,res))
+routes.post('/addjob',upload.single("JOBIMG"),(req,res)=>controller.addjob(req,res,fn))
+routes.get('/delete/:id',(req,res)=>controller.delete(req,res));
+routes.get('/edit/:id',(req,res)=>controller.edit(req,res));
+routes.post('/edit',(req,res)=>controller.editdata(req,res));
 
 // routes.post("/pinverify",(req,res)=>
 // {
@@ -111,12 +99,7 @@ routes.post('/search',(req,res)=>controller.search(req,res));
 //     res.render("pinverificaton");
 // }
 // })
-// routes.get("/Registration", (req, res, next) => {
 
-//     res.render('addjob');
-// })
-// routes.post('/Registration', upload.single("JOBIMG"), controller.register
-// )
 
 // routes.get("/admin", (req, res) => {
 //     var query = "SELECT * FROM JOB";

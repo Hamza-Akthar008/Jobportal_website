@@ -1,9 +1,11 @@
 var con = require("./db");
 const path =require('path');
+const multer = require('multer');
 const staticpage = path.join(__dirname, "../public", "about.html");
 con.connect();
 var found =true;
 var jobsearch;
+
 function homedata(req,res)
   {
     var Query = "SELECT COUNT(*) FROM job";
@@ -18,17 +20,11 @@ function homedata(req,res)
             let jobPerPage = 3;
             let startLimit = (page - 1) * jobPerPage;
             let totalPages = Math.ceil(Count / jobPerPage);
-if(found)
-{
+
     var selectQuery = `SELECT * from  job LIMIT   ${startLimit},${jobPerPage}`;
     
-    console.log(" done");
-}
-else
-{
-    var selectQuery = `SELECT * from  job WHERE JOBNAME LIKE ${jobsearch}  LIMIT   ${startLimit},${jobPerPage}`;
     
-}
+
 
             con.query(selectQuery, (err, data) => {
                 if (err) throw err;
@@ -37,7 +33,14 @@ else
                 }
             if(req.session.user_role=="ADMIN")
             {
-                res.render("admin",{data:data,page,jobPerPage,startLimit,totalPages});
+                var selectQuery = `SELECT * from  job `;
+                con.query(selectQuery,(err,data)=>
+                {
+                    
+                    res.render("admin",{data:data});
+
+                })
+    
 
             }
             else
@@ -123,9 +126,14 @@ exports.home =function(request,response)
                 }
                 if(request.session.user_role=="ADMIN")
                 {
-
-                 response.render("admin",{data:data,page,jobPerPage,startLimit,totalPages});
-                }
+                    var selectQuery = `SELECT * from  job `;
+                    con.query(selectQuery,(err,data)=>
+                    {
+                        
+                        response.render("admin",{data:data});
+    
+                    })
+                 }
                 else{
                     if(register=="false")
                     {
@@ -192,8 +200,71 @@ exports.search =(req,res)=>
    
     res.redirect('/');
 }
+exports.showaddjob=(req,res)=>
+{
+    res.render('addjob');
+}
+exports.addjob =(req,res,fn)=>
+{
+    var JOBNAME = req.body.JOBNAME;
+    var JOBTPYE = req.body.JOBTYPE;
+    var CATEGORY = req.body.CATEGORY;
+    var CITY = req.body.CITY;
+    var COUNTRY = req.body.COUNTRY;
+    var MIN_SAL = req.body.MIN_SAL;
+    var MAX_SAL = req.body.MAX_SAL;
+    var PUBLISHER = "Admin";
+    var JOBIMG = fn;
+    var query = "INSERT INTO `job`( `JOBIMG`, `JOBTYPE`, `JOBNAME`, `PUBLISHER`, `CATEGORY`, `CITY`, `COUNTRY`, `MIN_SAL`, `MAX_SAL`) VALUES ('" + JOBIMG + "','" + JOBTPYE + "','" + JOBNAME + "','" + PUBLISHER + "','" + CATEGORY + "','" + CITY + "','" + COUNTRY + "','" + MIN_SAL + "','" + MAX_SAL + "')";
+
+    con.query(query, (error, result) => {
+        if (error) throw error
+        else {
+
+            res.redirect("/");
 
 
+        }
+    })
+}
+exports.delete =(req,res)=>
+{
+    console.log(req.params.id);
+    var query = "DELETE FROM job WHERE ID ="+`"`+req.params.id+`"`;
+    con.query(query, (error, result) => {
+        if (error) throw error
+        else {
+            res.redirect("/");
+        }})
+}
+
+exports.edit = (req,res)=>
+{
+    var query = "Select * FROM job WHERE ID ="+`"`+req.params.id+`"`;
+    con.query(query, (error, data) => {
+        if (error) throw error
+        else {
+
+
+            res.render("edit",{data:data});
+        }})
+}
+exports.editdata =(req,res)=>
+{var JOBNAME = req.body.JOBNAME;
+    var JOBTPYE = req.body.JOBTYPE;
+    var CATEGORY = req.body.CATEGORY;
+    var CITY = req.body.CITY;
+    var COUNTRY = req.body.COUNTRY;
+    var MIN_SAL = req.body.MIN_SAL;
+    var MAX_SAL = req.body.MAX_SAL;
+    var PUBLISHER = "Admin";
+    console.log(req.body);
+    res.redirect('/');
+//       var query=  ` UPDATE job SET JOBTYPE='${JOBTPYE}',JOBNAME='${JOBNAME}',PUBLISHER='${PUBLISHER}',CATEGORY='${CATEGORY}',CITY='${CITY}',COUNTRY='${COUNTRY}',MIN_SAL='${MIN_SAL}',MAX_SAL='${MAX_SAL}' WHERE ID = "${req.params.id}"`
+//   con.query(query,(err,data)=>
+//   {
+//   })
+}
 
    
 

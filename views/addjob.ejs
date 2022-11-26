@@ -11,31 +11,29 @@
     <title>Post Job</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark background">
-        <div class="container">
-          <a class="navbar-brand " href="#">Talented-Pak</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse navmain" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item navmain">
-                <a class="nav-link " aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item navmain">
-                <a class="nav-link active" href="/Registration">Post a job</a>
-              </li>
-              <li class="nav-item navmain">
-                <a class="nav-link" href="#">About</a>
-              </li>
-              <li class="nav-item navmain">
-                <a class="nav-link" href="#">Blog</a>
-              </li>
-              <button type="button" class="btn btn-outline-primary navbtn" style="color: white;">Contact Us</button>
-           
-          </div>
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark background">
+    <div class="container">
+      <a class="navbar-brand " href="#">Talented-Pak</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse navmain" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item navmain">
+            <a class="btn btn-lg btn-outline-primary" class="nav-link active" aria-current="page" href="/">Back to Admin</a>
+          </li>
+          
+          
+          <form method="Post" action="/signout">
+          <input type="submit" value="Logout" class="btn btn-lg btn-outline-danger" style="color: white; margin-left: 10px;" >
+         </form>
+          
+
+      </div>
+    </div>
+  </nav> 
+
 <div class="container-fluid background pt-5 banner ">
    
       <figure class="text-center backgroundsty pt-5">
@@ -57,7 +55,7 @@
         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
           <div class="card-body p-4 p-md-5">
             <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Post a New Job</h3>
-            <form method="POST" action="/Registration" enctype="multipart/form-data">
+            <form method="POST" action="/addjob" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-md-6 mb-4">
 
