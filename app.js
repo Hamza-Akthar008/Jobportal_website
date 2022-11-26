@@ -1,8 +1,17 @@
 const express =require('express');
+const session =require('express-session');
 const app =express();
 const routes =require('./routes/index')
 var bodyparser=require('body-parser');
 
+
+app.use(session({
+  
+    secret:'123asdqwe@&%23asd',
+    resave:false,
+    saveUninitialized:false,
+    
+}))
 
 app.set("view engine","ejs");
 app.use('/',express.static('./public'));
