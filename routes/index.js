@@ -27,8 +27,10 @@ routes.get('/addjob',(req,res)=>controller.showaddjob(req,res))
 routes.post('/addjob',upload.single("JOBIMG"),(req,res)=>controller.addjob(req,res,fn))
 routes.get('/delete/:id',(req,res)=>controller.delete(req,res));
 routes.get('/edit/:id',(req,res)=>controller.edit(req,res));
-routes.post('/edit',(req,res)=>controller.editdata(req,res));
-
+routes.post('/edit/:id',(req,res)=>controller.editdata(req,res));
+routes.get('/blog',(req,res)=>controller.blog(req,res));
+routes.get('/addblog',(req,res)=>controller.addblog(req,res));
+routes.post('/addblog',upload.single("BLOGIMG"),(req,res)=>controller.addblogpost(req,res,fn));
 // routes.post("/pinverify",(req,res)=>
 // {
 //     if(code==req.body.name)
@@ -101,30 +103,6 @@ routes.post('/edit',(req,res)=>controller.editdata(req,res));
 // })
 
 
-// routes.get("/admin", (req, res) => {
-//     var query = "SELECT * FROM JOB";
-//     con.query(query, (err, data) => {
-//         if (err) throw err;
-//         else
-//             res.render("admin", { data: data });
-
-//     })
-//     routes.get('/admin/:id', (req, res) => {
-
-
-//         var id = req.query.id;
-//         var query = `Delete from job where id = ${id}`;
-//         con.query(query, (err, data) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             else {
-//                 res.render("admin");
-//             }
-//         })
-//     })
-
-// })
 
 
   
