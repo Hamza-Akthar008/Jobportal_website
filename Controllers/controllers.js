@@ -233,14 +233,12 @@ exports.editdata = (req, res) => {
     var COUNTRY = req.body.COUNTRY;
     var MIN_SAL = req.body.MIN_SAL;
     var MAX_SAL = req.body.MAX_SAL;
-    var PUBLISHER = "Admin";
-    console.log(req.body);
-    
-    res.redirect('/');
-    //       var query=  ` UPDATE job SET JOBTYPE='${JOBTPYE}',JOBNAME='${JOBNAME}',PUBLISHER='${PUBLISHER}',CATEGORY='${CATEGORY}',CITY='${CITY}',COUNTRY='${COUNTRY}',MIN_SAL='${MIN_SAL}',MAX_SAL='${MAX_SAL}' WHERE ID = "${req.params.id}"`
-    //   con.query(query,(err,data)=>
-    //   {
-    //   })
+    var PUBLISHER = "Admin";    
+          var query=  ` UPDATE job SET JOBTYPE='${JOBTPYE}',JOBNAME='${JOBNAME}',PUBLISHER='${PUBLISHER}',CATEGORY='${CATEGORY}',CITY='${CITY}',COUNTRY='${COUNTRY}',MIN_SAL='${MIN_SAL}',MAX_SAL='${MAX_SAL}' WHERE ID = "${req.params.id}"`
+      con.query(query,(err,data)=>
+      {
+        res.redirect('/');
+      })
 }
 exports.blog = (req, res) => {
 
