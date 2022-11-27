@@ -1,7 +1,9 @@
 var con = require("./db");
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
 const staticpage = path.join(__dirname, "../public", "about.html");
+const deleteimg =path.join(__dirname,"../public/databaseimg/")
 con.connect();
 var found = true;
 var jobsearch;
@@ -211,14 +213,26 @@ req.flash('message','Job Added Succesfully');
 }
 exports.delete = (req, res) => {
     console.log(req.params.id);
-    var query = "DELETE FROM job WHERE ID =" + `"` + req.params.id + `"`;
-    con.query(query, (error, result) => {
-        if (error) throw error
-        else {
-            req.flash('message','Job Deleted Succesfully');
-            res.redirect("/");
-        }
+    var query=`Select * from job Where ID = "${req.params.id}"`
+    con.query(query,(err,result)=>
+    {
+fs.unlink(deleteimg+result[0].JOBIMG,(err)=>
+{
+    if(err) throw err;
+    console.log("file delete");
+});
+
     })
+    var query = "DELETE FROM job WHERE ID =" + `"` + req.params.id + `"`;
+con.query(query, (error, result) => {
+    if (error) throw error
+    else {
+
+        req.flash('message','Job Deleted Succesfully');
+        res.redirect("/");
+    }
+})
+   
 }
 
 exports.edit = (req, res) => {
@@ -280,4 +294,24 @@ else
     res.redirect("/");
 }
     })
+}
+exports.postcomment=(req,res)=>
+{
+    console.log(req.session);
+    var email;
+var query = `select Email from user where ID = "${req.session.user_id}" `
+con.query(query,(err,data)=>
+{
+
+var query =`INSERT INTO comments(Blog_ID, Comment, User_email) VALUES ('${req.params.id}','${req.body.Comment}','${data[0].Email}')`;
+ 
+con.query(query,(err,data)=>
+{
+   
+   res.redirect("/blog");
+})
+})
+
+
+ 
 }

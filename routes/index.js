@@ -2,6 +2,7 @@ const express = require('express');
 const routes = express.Router();
 const path = require('path');
 const multer =require('multer');
+
 const controller =require("../Controllers/controllers.js");
 var user_email_address;
 var fn="";
@@ -30,8 +31,10 @@ routes.get('/delete/:id',(req,res)=>controller.delete(req,res));
 routes.get('/edit/:id',(req,res)=>controller.edit(req,res));
 routes.post('/edit/:id',upload.none(),(req,res)=>controller.editdata(req,res));
 routes.get('/blog',(req,res)=>controller.blog(req,res));
+routes.post('/blog/:id',upload.none(),(req,res)=>controller.postcomment(req,res));
 routes.get('/addblog',(req,res)=>controller.addblog(req,res));
 routes.post('/addblog',upload.single("BLOGIMG"),(req,res)=>controller.addblogpost(req,res,fn));
+
 // routes.post("/pinverify",(req,res)=>
 // {
 //     if(code==req.body.name)
