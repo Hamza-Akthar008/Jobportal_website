@@ -6,14 +6,14 @@ let transporter = nodemailer.createTransport({
       pass: "vspkmolktosaubkv", // generated ethereal password
     },
   });
-  exports.sendemail= ()=>
+  exports.sendemail= (code)=>
   {
     var mailOptions = {
         from: "talentedpak008@gmail.com",
         to: "f200319@cfd.nu.edu.pk",
         subject: "Forget Password",
-        text: "The Verfication code  is : " ,
-        html:  '<p> </p>'
+        text: "The Verfication code  is : "+code 
+       
       };
       transporter.sendMail(mailOptions
       );
