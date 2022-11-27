@@ -3,16 +3,17 @@ const session =require('express-session');
 const app =express();
 const routes =require('./routes/index')
 var bodyparser=require('body-parser');
-
+var flush = require('connect-flash');
 
 app.use(session({
   
     secret:'123asdqwe@&%23asd',
+    cookie:{maxAge:60000},
     resave:false,
     saveUninitialized:false,
     
 }))
-
+app.use(flush());
 app.set("view engine","ejs");
 app.use('/',express.static('./public'));
 app.use('/css',express.static('./public/css'));

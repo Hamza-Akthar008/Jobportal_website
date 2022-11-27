@@ -58,7 +58,11 @@
             </div>
           </div>
         </div>
-       
+        <% if (message) { %>
+          <div class="alert mt-5 alert-success">
+              <strong><%= message %></strong>
+          </div>
+          <% } %>
       </section>
 </body>
 </html>

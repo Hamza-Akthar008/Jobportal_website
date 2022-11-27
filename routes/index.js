@@ -22,6 +22,7 @@ routes.post('/', function(request, response, next){
 routes.get("/",(req,res)=>controller.signin(req,res));
 routes.get('/about',(req,res)=>controller.about(req,res));
 routes.post('/signout',(req,res)=>controller.logout(req,res));
+routes.get('/signout',(req,res)=>controller.logout(req,res));
 routes.post('/search',(req,res)=>controller.search(req,res));
 routes.get('/addjob',(req,res)=>controller.showaddjob(req,res))
 routes.post('/addjob',upload.single("JOBIMG"),(req,res)=>controller.addjob(req,res,fn))

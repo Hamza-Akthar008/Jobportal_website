@@ -30,18 +30,19 @@ function homedata(req, res) {
                 else {
 
                 }
+                req.flash('message','');
                 if (req.session.user_role == "ADMIN") {
                     var selectQuery = `SELECT * from  job `;
                     con.query(selectQuery, (err, data) => {
-
-                        res.render("admin", { data: data });
+                       
+                        res.render("admin", { data: data,message:req.flash('message') });
 
                     })
 
 
                 }
                 else {
-                    res.render("home", { data: data, page, jobPerPage, startLimit, totalPages });
+                    res.render("home", { data: data, page, jobPerPage, startLimit, totalPages,message:req.flash('message') });
 
                 }
 
@@ -63,7 +64,10 @@ exports.signin = function (req, res) {
     }
 
     else {
-        res.render('signin');
+
+        res.render('signin',{message:req.flash('message')});
+                   
+       
 
     }
 }
@@ -86,6 +90,7 @@ exports.home = function (request, response) {
                 for (var count = 0; count < data.length; count++) {
 
                     if (data[count].Password == user_password) {
+                        request.flash('message','Login Successfully');
                         request.session.user_id = data[count].ID;
 
                         request.session.user_role = data[count].role;
@@ -117,7 +122,7 @@ exports.home = function (request, response) {
                                         var selectQuery = `SELECT * from  job `;
                                         con.query(selectQuery, (err, data) => {
 
-                                            response.render("admin", { data: data });
+                                            response.render("admin", { data: data ,message:request.flash('message')});
 
                                         })
                                     }
@@ -127,7 +132,8 @@ exports.home = function (request, response) {
                                         }
                                         else {
 
-                                            response.render("home", { data: data, page, jobPerPage, startLimit, totalPages })
+                                           
+                                            response.render("home", { data: data, page, jobPerPage, startLimit, totalPages,message:request.flash('message') })
                                         }
 
 
@@ -142,18 +148,20 @@ exports.home = function (request, response) {
 
                     }
                     else {
-                        response.send('Incorrect Password');
+                        response.render('signin',{message:'Password is Incorrect !', message_type: 'alert-danger'});
                     }
                 }
             }
             else {
-                response.send('Incorrect Email Address');
-            }
+                response.render('signin',{message:'Email not Found', message_type: 'alert-danger'});
+                     }
 
         });
     }
     else {
-        response.send('Please Enter Email Address and Password Details');
+        response.render('signin',{message:'Please Enter Email Address and Password Details', message_type: 'alert-danger'});
+                
+        
 
     }
 
@@ -171,6 +179,7 @@ exports.about = (req, res) => {
 }
 
 exports.logout = (req, res) => {
+  
     req.session.destroy();
     res.redirect("/");
 }
@@ -196,11 +205,8 @@ exports.addjob = (req, res, fn) => {
     con.query(query, (error, result) => {
         if (error) throw error
         else {
-
-            res.redirect("/");
-
-
-        }
+req.flash('message','Job Added Succesfully');
+            res.redirect("/");        }
     })
 }
 exports.delete = (req, res) => {
@@ -209,6 +215,7 @@ exports.delete = (req, res) => {
     con.query(query, (error, result) => {
         if (error) throw error
         else {
+            req.flash('message','Job Deleted Succesfully');
             res.redirect("/");
         }
     })
@@ -237,6 +244,7 @@ exports.editdata = (req, res) => {
           var query=  ` UPDATE job SET JOBTYPE='${JOBTPYE}',JOBNAME='${JOBNAME}',PUBLISHER='${PUBLISHER}',CATEGORY='${CATEGORY}',CITY='${CITY}',COUNTRY='${COUNTRY}',MIN_SAL='${MIN_SAL}',MAX_SAL='${MAX_SAL}' WHERE ID = "${req.params.id}"`
       con.query(query,(err,data)=>
       {
+        req.flash('message','Job Edited Succesfully');
         res.redirect('/');
       })
 }
@@ -268,6 +276,7 @@ exports.addblogpost =(req,res,fn)=>
 if(err)throw err;
 else
 {
+    req.flash('message','Blog Posted Succesfully');
     res.redirect("/");
 }
     })
