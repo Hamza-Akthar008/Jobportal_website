@@ -34,6 +34,8 @@ routes.get('/blog',(req,res)=>controller.blog(req,res));
 routes.post('/blog/:id',upload.none(),(req,res)=>controller.postcomment(req,res));
 routes.get('/addblog',(req,res)=>controller.addblog(req,res));
 routes.post('/addblog',upload.single("BLOGIMG"),(req,res)=>controller.addblogpost(req,res,fn));
+routes.get('/signin/verify',(req,res)=>controller.verify(req,res));
+routes.post('/signin/verify',(req,res)=>controller.verifycode(req,res));
 
 // routes.post("/pinverify",(req,res)=>
 // {

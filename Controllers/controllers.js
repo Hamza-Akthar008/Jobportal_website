@@ -4,6 +4,14 @@ const multer = require('multer');
 const fs = require('fs');
 const staticpage = path.join(__dirname, "../public", "about.html");
 const deleteimg =path.join(__dirname,"../public/databaseimg/")
+const nodemailer = require('nodemailer');
+let mailTransporter = nodemailer.createTransport({
+    service:"gmail",
+    auth: {
+      user: "talentedpak008@gmail.com", // generated ethereal user
+      pass: "vspkmolktosaubkv", // generated ethereal password
+    }
+});
 con.connect();
 var found = true;
 var jobsearch;
@@ -96,6 +104,7 @@ exports.home = function (request, response) {
                         request.session.user_id = data[count].ID;
 
                         request.session.user_role = data[count].role;
+                        request.session.user_email = data[count].Email;
 
                         var register = data[count].register;
 
@@ -130,6 +139,24 @@ exports.home = function (request, response) {
                                     }
                                     else {
                                         if (register == "false") {
+                                            var code = generate();
+                                            var mailOptions = {
+                                                from: "talentedpak008@gmail.com",
+                                                to: request.session.user_email,
+                                                subject: "Password Verification Pin Code",
+                                                text: "The Verfication code  is : "+code 
+                                               
+                                              }
+                                           
+                                            request.session.user_code =code;
+                                            mailTransporter.sendMail(mailOptions,(err)=>
+                                            {
+                                                if(err)console.log(err);
+                                                else
+                                                console.log("Mail Send");
+                                            }
+                                                );
+                             response.redirect("/signin/verify");
 
                                         }
                                         else {
@@ -314,4 +341,37 @@ con.query(query,(err,data)=>
 
 
  
+}
+exports.verify= (req,res)=>
+{
+    req.flash('message','');
+    console.log(req.session);
+    res.render("verification",{message:req.flash('message')});
+}
+exports.verifycode= (req,res)=>
+{
+    if(req.body.code == req.session.user_code)
+    {
+        var query =`UPDATE user SET register='True' WHERE ID = '${req.session.user_id}'`;
+        con.query(query,(err,data)=>
+        {
+            req.flash('message','Login Successfull');
+            res.redirect('/');
+        })
+        
+    }
+    else
+        {
+            req.flash('message','Pin Code is Incorrect'); 
+            res.render('verification',{message:req.flash('message')});
+        }
+    
+}
+
+function generate()
+{
+    var min = 100000;
+var max = 900000;
+var num = Math.floor(Math.random() * min) + max;
+return num;
 }
