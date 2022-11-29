@@ -96,14 +96,21 @@
                                   <br>
                                   <input class="btn btn-lg btn-primary" type="submit" value="Submit">
                                 </form>
-                                <!-- Comment with nested comments-->
-                                <div class="d-flex mb-4">
-                                    <!-- Parent comment-->
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold"></div>
-                                       
-                                       
+
+                                <% result.forEach(result=> { %>
+                                  <% if(data.Blog_ID==result.Blog_ID)
+                                  {%>
+                                <div class="media">
+                                  <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+                                  <div class="media-body">
+                                      <h4 class="media-heading"><%=result.User_email%></h4>
+                                      <p><%=result.Comment%></p>
+                                     
+                                    
+                                  </div>
+                              </div>
+                            }%>
+                              <% }) %>      
                                        
                                     </div>
                                 </div>

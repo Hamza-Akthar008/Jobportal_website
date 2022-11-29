@@ -294,7 +294,12 @@ exports.blog = (req, res) => {
 var query ="Select * from blog";
 con.query(query,(err,data)=>
 {
-    res.render('blog',{data:data});
+    var query ="Select * from comments";
+    con.query(query,(err,result)=>
+    {
+        res.render('blog',{data:data,result:result});
+
+    })
 })
 
 
