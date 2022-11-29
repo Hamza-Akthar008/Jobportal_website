@@ -289,7 +289,39 @@ exports.editdata = (req, res) => {
         res.redirect('/');
       })
 }
+exports.blog = (req, res) => {
 
+var query ="Select * from blog";
+con.query(query,(err,data)=>
+{
+
+    res.render('blog',{data:data});
+})
+
+
+}
+exports.addblog = (req, res) => {
+res.render('addblog');
+}
+exports.addblogpost =(req,res,fn)=>
+{
+    var Post_title = req.body.Post_title;
+    var Date = req.body.Date;
+    var TAG1 = req.body.TAG1;
+    var TAG2 = req.body.TAG2;
+    var description = req.body.description;
+    var BLOGIMG = fn; 
+    var query =`INSERT INTO blog( Post_title, Date, TAG1, TAG2, description, BLOGIMG) VALUES ('${Post_title}','${Date}','${TAG1}','${TAG2}','${description}','${BLOGIMG}') `
+    con.query(query,(err,data)=>
+    {
+if(err)throw err;
+else
+{
+    req.flash('message','Blog Posted Succesfully');
+    res.redirect("/");
+}
+    })
+}
 exports.postcomment=(req,res)=>
 {
     console.log(req.session);
