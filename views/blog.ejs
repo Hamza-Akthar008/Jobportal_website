@@ -97,20 +97,6 @@
                                   <input class="btn btn-lg btn-primary" type="submit" value="Submit">
                                 </form>
 
-                                <% result.forEach(result=> { %>
-                                  <% if(data.Blog_ID==result.Blog_ID)
-                                  {%>
-                                <div class="media">
-                                  <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-                                  <div class="media-body">
-                                      <h4 class="media-heading"><%=result.User_email%></h4>
-                                      <p><%=result.Comment%></p>
-                                     
-                                    
-                                  </div>
-                              </div>
-                            }%>
-                              <% }) %>      
                                        
                                     </div>
                                 </div>
