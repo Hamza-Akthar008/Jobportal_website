@@ -295,7 +295,10 @@ var query ="Select * from blog";
 con.query(query,(err,data)=>
 {
 
+
     res.render('blog',{data:data});
+
+
 })
 
 
