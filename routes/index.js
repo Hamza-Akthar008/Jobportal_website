@@ -36,7 +36,8 @@ routes.get('/addblog',(req,res)=>controller.addblog(req,res));
 routes.post('/addblog',upload.single("BLOGIMG"),(req,res)=>controller.addblogpost(req,res,fn));
 routes.get('/signin/verify',(req,res)=>controller.verify(req,res));
 routes.post('/signin/verify',(req,res)=>controller.verifycode(req,res));
-
+routes.post('/rating/:id',(req,res)=>controller.rating(req,res));
+routes.post('/review/:review',(req,res)=>controller.review(req,res));
 // routes.post("/pinverify",(req,res)=>
 // {
 //     if(code==req.body.name)

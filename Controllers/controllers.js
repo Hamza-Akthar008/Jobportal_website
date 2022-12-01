@@ -378,3 +378,24 @@ var max = 900000;
 var num = Math.floor(Math.random() * min) + max;
 return num;
 }
+
+
+
+exports.rating = (req,res)=>
+{
+var query=  ` UPDATE blog SET rating='${req.body.rating}' where Blog_ID = '${req.params.id}'`
+con.query(query,(err,data)=>
+{
+res.redirect('/blog');
+})
+}
+
+exports.review =(req,res)=>
+{
+    var query = `INSERT INTO review( Email, review) VALUES ('${req.body.review}','${req.session.user_email}')`;
+    con.query(query,(req,res)=>
+    {
+       
+        res.redirect("/blog");
+    })
+}

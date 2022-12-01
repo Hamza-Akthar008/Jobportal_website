@@ -88,6 +88,30 @@
                     <section class="mb-5">
                         <div class="card bg-light">
                             <div class="card-body">
+                              <% if(data.rating == 0 ) { %>   
+                                <form method="post" action="/rating/<%=data.Blog_ID%>">
+                                  <fieldset class="rating">
+                                    <input type="submit" type="radio" id="star5" name="rating" value="5" required />
+                                    <label for="star5">5 stars</label>
+                                    <input type="submit" type="radio" id="star4" name="rating" value="4" required />
+                                    <label for="star4">4 stars</label>
+                                    <input type="submit" type="radio" id="star3" name="rating" value="3" required />
+                                    <label for="star3">3 stars</label>
+                                    <input type="submit" type="radio" id="star2" name="rating" value="2" required />
+                                    <label for="star2">2 stars</label>
+                                    <input type="submit" type="radio" id="star1" name="rating" value="1" required />
+                                    <label for="star1">1 star</label>
+                                  </fieldset>
+                                </form>
+              
+                                <%} else {%>           
+                                 <%for (let i=0; i <   data.rating; i++) {%>
+                                   <i class="fa fa-star rating-color rating"></i>
+                                   <% }%>
+                                   <br>
+                                   <br>
+                         <%}%>
+                     
                                 <!-- Comment form-->
                                 <form method="post" action="/blog/<%=data.Blog_ID%>"  class="mb-4" >
                                 
