@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 
 function extractItems() {
 
-  const extractedElements = document.querySelectorAll('h4 > a, .item-price > ins');
+  const extractedElements = document.querySelectorAll('.add-details.jobs-item >h3 >a , .item-price > ins');
   
   const items = [];
   for (let element of extractedElements) {
