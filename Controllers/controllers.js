@@ -117,7 +117,7 @@ exports.home = function (request, response) {
                             else {
                                 let Count = data[0]["COUNT(*)"];
                                 let page = 1;
-                                let jobPerPage = 3;
+                                let jobPerPage = 15;
                                 let startLimit = (page - 1) * jobPerPage;
                                 let totalPages = Math.ceil(Count / jobPerPage);
 
@@ -219,18 +219,20 @@ exports.search = (req, res) => {
 exports.showaddjob = (req, res) => {
     res.render('addjob');
 }
-exports.addjob = (req, res, fn) => {
+exports.addjob = (req, res) => {
     var JOBNAME = req.body.JOBNAME;
     var JOBTPYE = req.body.JOBTYPE;
     var CATEGORY = req.body.CATEGORY;
     var CITY = req.body.CITY;
-    var COUNTRY = req.body.COUNTRY;
-    var MIN_SAL = req.body.MIN_SAL;
-    var MAX_SAL = req.body.MAX_SAL;
+    var DATE = req.body.DATE;
+    var Description = req.body.Description;
+   
     var PUBLISHER = "Admin";
-    var JOBIMG = fn;
-    var query = "INSERT INTO `job`( `JOBIMG`, `JOBTYPE`, `JOBNAME`, `PUBLISHER`, `CATEGORY`, `CITY`, `COUNTRY`, `MIN_SAL`, `MAX_SAL`) VALUES ('" + JOBIMG + "','" + JOBTPYE + "','" + JOBNAME + "','" + PUBLISHER + "','" + CATEGORY + "','" + CITY + "','" + COUNTRY + "','" + MIN_SAL + "','" + MAX_SAL + "')";
-
+   
+    var query =`INSERT INTO job( JOBTYPE, JOBNAME, PUBLISHER, CATEGORY, CITY, DATE, Description) VALUES 
+    ('${JOBTPYE}','${JOBNAME}','Admin','${CATEGORY}','${CITY}','${DATE}','${Description}')`;
+   
+    
     con.query(query, (error, result) => {
         if (error) throw error
         else {
@@ -278,11 +280,11 @@ exports.editdata = (req, res) => {
     var JOBTPYE = req.body.JOBTYPE;
     var CATEGORY = req.body.CATEGORY;
     var CITY = req.body.CITY;
-    var COUNTRY = req.body.COUNTRY;
-    var MIN_SAL = req.body.MIN_SAL;
-    var MAX_SAL = req.body.MAX_SAL;
+    var DATE = req.body.DATE;
+    var Description = req.body.Description;
+    
     var PUBLISHER = "Admin";    
-          var query=  ` UPDATE job SET JOBTYPE='${JOBTPYE}',JOBNAME='${JOBNAME}',PUBLISHER='${PUBLISHER}',CATEGORY='${CATEGORY}',CITY='${CITY}',COUNTRY='${COUNTRY}',MIN_SAL='${MIN_SAL}',MAX_SAL='${MAX_SAL}' WHERE ID = "${req.params.id}"`
+          var query=  ` UPDATE job SET JOBTYPE='${JOBTPYE}',JOBNAME='${JOBNAME}',PUBLISHER='${PUBLISHER}',CATEGORY='${CATEGORY}',CITY='${CITY}',DATE='${DATE}',Description='${Description}' WHERE ID = "${req.params.id}"`
       con.query(query,(err,data)=>
       {
         req.flash('message','Job Edited Succesfully');

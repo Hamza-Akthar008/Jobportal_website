@@ -60,7 +60,7 @@
                 <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input value="<%=data[0].JOBNAME%>" name="JOBNAME" type="text" id="JOBNAME" class="form-control form-control-lg" />
+                    <input name="JOBNAME" type="text" id="JOBNAME" class="form-control form-control-lg" />
                     <label class="form-label" for="JOBNAME">Job Name</label>
                   </div>
 
@@ -68,7 +68,7 @@
                 <div class="col-md-6 mb-4">
 
                   <div class="form-outline">
-                    <input value="<%=data[0].CATEGORY %>" name="CATEGORY" type="text" id="CATEGORY" class="form-control form-control-lg" />
+                    <input name="CATEGORY" type="text" id="CATEGORY" class="form-control form-control-lg" />
                     <label class="form-label" for="CATEGORY">CATEGORY</label>
                   </div>
 
@@ -79,37 +79,41 @@
                 <div class="col-md-6 mb-4 d-flex align-items-center">
 
                   <div class="form-outline datepicker w-100">
-                    <input value="<%=data[0].CITY %>" name="CITY" type="text" class="form-control form-control-lg" id="CITY" />
+                    <input name="CITY" type="text" class="form-control form-control-lg" id="CITY" />
                     <label for="CITY" class="form-label">CITY</label>
                   </div>
                   
                 </div>
-                <div class="col-md-6 mb-4 d-flex align-items-center">
-                  <div class="form-outline datepicker w-100">
-                    <input value="<%=data[0].COUNTRY%>" name="COUNTRY" type="text" class="form-control form-control-lg" id="COUNTRY" />
-                    <label for="COUNTRY" class="form-label">COUNTRY</label>
-                  </div>
-                </div>
+                
 
                 <div class="col-md-6 mb-4 d-flex align-items-center">
                   <div class="form-outline datepicker w-100">
-                    <input value="<%=data[0].MIN_SAL %>" name="MIN_SAL" type="number" class="form-control form-control-lg" id="MIN_SAL" />
-                    <label for="MIN_SAL" class="form-label">MINIMUN SALARY</label>
+                    <input name="DATE" type="date" class="form-control form-control-lg" id="DATE" />
+                    <label for="DATE" class="form-label">DATE </label>
                   </div>
+                 
                 </div>
-                <div class="col-md-6 mb-4 d-flex align-items-center">
-                <div class="form-outline datepicker w-100">
-                  <input value="<%=data[0].MAX_SAL %>" name="MAX_SAL" type="number" class="form-control form-control-lg" id="MAX_SAL" />
-                  <label for="MAX_SAL" class="form-label">MAXIMUM SALARY</label>
-                </div>
-              </div>
-              </div>
+                
+
+           
               <div class="col-md-6 mb-4 d-flex align-items-center">
                 <div class="form-outline datepicker w-100">
-                  <input  value="<%=data[0].JOBTYPE %>" name = "JOBTYPE" type="text" class="form-control form-control-lg" id="JOBTYPE" />
+                  <input name = "JOBTYPE" type="text" class="form-control form-control-lg" id="JOBTYPE" />
                   <label for="JOBTYPE" class="form-label">JOB TYPE</label>
                 </div>
 </div>
+<div class="col-md-6 mb-4 d-flex align-items-center">
+  <div class="form-outline datepicker w-100">
+    <input name = "Description" type="text" class="form-control form-control-lg" id="Description" />
+    <label for="Description" class="form-label">Description</label>
+  </div>
+</div>
+
+              
+                  <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                </div>
+              </div>
+              </div>
                   <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
                 </div>
               </div>
