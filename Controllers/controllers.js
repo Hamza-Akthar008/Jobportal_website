@@ -289,20 +289,32 @@ exports.editdata = (req, res) => {
         res.redirect('/');
       })
 }
+
 exports.blog = (req, res) => {
 
-var query ="Select * from blog";
-con.query(query,(err,data)=>
-{
-   
-   
-        res.render('blog',{data:data});
+    var query ="Select * from blog";
+    con.query(query,(err,data)=>
+    {
+        var query ="Select * from comments";
+        con.query(query,(err,result)=>
+        {
+            res.render('blog',{data:data,result:result,title:"blog"});
+    
+        })
+    })
+    
+    
+    }
 
-   
-})
-
-
-}
+    exports.rating = (req,res)=>
+    {
+ var query=  ` UPDATE blog SET rating='${req.body.rating}' where Blog_ID = '${req.params.id}'`
+   con.query(query,(err,data)=>
+   {
+    res.redirect('/blog');
+   })
+    }
+    
 exports.addblog = (req, res) => {
 res.render('addblog');
 }
@@ -314,7 +326,7 @@ exports.addblogpost =(req,res,fn)=>
     var TAG2 = req.body.TAG2;
     var description = req.body.description;
     var BLOGIMG = fn; 
-    var query =`INSERT INTO blog( Post_title, Date, TAG1, TAG2, description, BLOGIMG) VALUES ('${Post_title}','${Date}','${TAG1}','${TAG2}','${description}','${BLOGIMG}') `
+    var query =`INSERT INTO blog( Post_title, Date, TAG1, TAG2, description, BLOGIMG,rating) VALUES ('${Post_title}','${Date}','${TAG1}','${TAG2}','${description}','${BLOGIMG}','0') `
     con.query(query,(err,data)=>
     {
 if(err)throw err;
@@ -333,7 +345,8 @@ var query = `select Email from user where ID = "${req.session.user_id}" `
 con.query(query,(err,data)=>
 {
 
-var query =`INSERT INTO comments(Blog_ID, Comment, User_email) VALUES ('${req.params.id}','${req.body.Comment}','${data[0].Email}')`;
+ var query =`INSERT INTO comments(Blog_ID, Comment, User_email,rating) VALUES ('${req.params.id}','${req.body.Comment}','${data[0].Email}','${req.body.rating}')`;
+//var query =`INSERT INTO comments(Blog_ID, Comment, User_email) VALUES ('${req.params.id}','${req.body.Comment}','${data[0].Email}')`;
  
 con.query(query,(err,data)=>
 {
@@ -344,6 +357,15 @@ con.query(query,(err,data)=>
 
 
  
+}
+exports.review =(req,res)=>
+{
+    var query = `INSERT INTO review( Email, review) VALUES ('${req.body.review}','${req.session.user_email}')`;
+    con.query(query,(req,res)=>
+    {
+       
+        res.redirect("/blog");
+    })
 }
 exports.verify= (req,res)=>
 {
@@ -377,25 +399,4 @@ function generate()
 var max = 900000;
 var num = Math.floor(Math.random() * min) + max;
 return num;
-}
-
-
-
-exports.rating = (req,res)=>
-{
-var query=  ` UPDATE blog SET rating='${req.body.rating}' where Blog_ID = '${req.params.id}'`
-con.query(query,(err,data)=>
-{
-res.redirect('/blog');
-})
-}
-
-exports.review =(req,res)=>
-{
-    var query = `INSERT INTO review( Email, review) VALUES ('${req.body.review}','${req.session.user_email}')`;
-    con.query(query,(req,res)=>
-    {
-       
-        res.redirect("/blog");
-    })
 }
