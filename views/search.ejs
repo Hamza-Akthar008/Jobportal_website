@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
 
-  <title>Home Page</title>
+  <title>Search Page</title>
 </head>
 
 <body>
@@ -36,9 +36,10 @@
             <a class="nav-link" href="#">Blog</a>
           </li>
           <button type="button" class="btn btn-outline-primary navbtn" style="color: white;">Contact Us</button>
-         <form method="get" action="/admin">
-          <input type="submit" value="Admin Panel" class="btn btn-lg btn-outline-danger" style="color: white; margin-left: 10px;" >
-         </form>
+          <form method="Post" action="/signout">
+            <input type="submit" value="Logout" class="btn btn-lg btn-outline-danger" style="color: white; margin-left: 10px;" >
+           </form>
+            
           
 
       </div>
@@ -67,65 +68,25 @@
     </form>
 
   </div>
-  <div class="container-fluid   pt-5 mt-5 background2 ">
-
-    <figure class="text-center backgroundsty pt-5">
-      <blockquote class="blockquote">
-        <h1>Careers Statistics</h1>
-      </blockquote>
-      <h3 class="blockquote backgroundsty pt-4">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde officiis recusandae sequi excepturi
-        corrupti. <cite title="Source Title"></cite>
-      </h3>
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <h1>1,930</h1>
-          </div>
-          <div class="col">
-            <h1>54</h1>
-          </div>
-          <div class="col">
-            <h1>120</h1>
-          </div>
-          <div class="col">
-            <h1>550</h1>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col">Candidates</div>
-            <div class="col">Jobs Posted</div>
-            <div class="col">Jobs Filled</div>
-            <div class="col">Companies</div>
-          </div>
-    </figure>
-  </div>
+ 
   <% data.forEach(data=> { %>
     <div class="container mt-5">
 
       <div class="row mt-2 g-1">
         <div class="col-md-12">
           <div class="card p-2">
-            <div class="text-right"> <small>
-                <%= data.JOBTYPE %>
-              </small> </div>
-
-            <div class="text-center mt-2 p-3"> <img src="databaseimg/<%=data.JOBIMG%>" width="200" /> <span
-                class="d-block font-weight-bold">
-                <%= data.JOBNAME %>
-              </span>
-              <hr> <span>
-                <%= data.PUBLISHER %><br>
-                  <%= data.CATEGORY %>
-              </span>
-              <div class="d-flex flex-row align-items-center justify-content-center"> <i class="fa fa-map-marker"></i>
-                <small class="ml-1">
-                  <%= data.CITY %> ,<%= data.COUNTRY %>
-                </small> </div>
-              <div class="d-flex justify-content-between mt-3"> <span> $<%= data.MIN_SAL %>K-$<%= data.MAX_SAL %>
-                      K</span> <button class="btn btn-sm btn-outline-dark">Apply Now</button> </div>
+            
+            <div class="container card mt-4" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title"> <%= data.JOBNAME %></h5>
+                <h6 class="card-subtitle mb-2 text-muted"> <%= data.JOBTYPE %></h6>
+                <p class="card-text"> <%= data.PUBLISHER %>,  <%= data.CATEGORY %></p>
+                <a href="#" class="card-link" style="text-decoration:none;" >  <%= data.CITY %> </a>
+                <a href="#" class="card-link" style="text-decoration:none;"><%= data.DATE %></a>
+              </div>
+              <a href="#" class="btn btn-lg btn-outline-primary">Apply Now</a>
             </div>
+           
           </div>
         </div>
       </div>
@@ -135,25 +96,7 @@
 
 
 
-    <nav aria-label="Page navigation">
-      <ul class="pagination d-flex justify-content-center mt-5">
-        <li class="page-item <%=(page==1)?`disabled`:``%>">
-          <a class="page-link" href="/?page=<%=(page==1)?`1`:`${page-1}`%>" tabindex="-1">Previous</a>
-        </li>
-      <% for(let pageCount=1; pageCount<=totalPages; pageCount++){ %>
-      <%if(pageCount==page) {%>
-        <li class="page-item active">
-          <a class="page-link" href="#"><%= pageCount%><span class="sr-only">(current)</span></a>
-        </li>
-      <%}else{%>
-        <li class="page-item"><a class="page-link" href="/?page=<%=pageCount%>"><%= pageCount%></a></li>
-      <%} }%>
-      <li class="page-item <%=(page==totalPages)?`disabled`:``%>">
-        <a class="page-link" href="/?page=<%=(page==totalPages)?`totalPages`:`${Number(page)+1}`%>">Next</a>
-      </li>
-    </ul>
-  </nav>
-
+  
       <!-- Remove the container if you want to extend the Footer to full width. -->
       <div class="container-fluid mt-5">
         <!-- Footer -->
