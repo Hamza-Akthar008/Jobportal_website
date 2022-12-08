@@ -42,11 +42,11 @@ function homedata(req, res) {
                 }
                 req.flash('message','');
                 if (req.session.user_role == "ADMIN") {
-                    var selectQuery = `SELECT * from  job `;
+                    var selectQuery = `SELECT * from  job LIMIT   ${startLimit},${jobPerPage}`;
                     con.query(selectQuery, (err, data) => {
-                       
-                        res.render("admin", { data: data,message:req.flash('message') });
+                        res.render("admin", { data: data ,message:request.flash('message'),page, jobPerPage, startLimit, totalPages});
 
+                      
                     })
 
 
@@ -117,7 +117,7 @@ exports.home = function (request, response) {
                             else {
                                 let Count = data[0]["COUNT(*)"];
                                 let page = 1;
-                                let jobPerPage = 15;
+                                let jobPerPage = 10;
                                 let startLimit = (page - 1) * jobPerPage;
                                 let totalPages = Math.ceil(Count / jobPerPage);
 
@@ -130,10 +130,11 @@ exports.home = function (request, response) {
 
                                     }
                                     if (request.session.user_role == "ADMIN") {
-                                        var selectQuery = `SELECT * from  job `;
+                                        let selectQuery = `SELECT * from  job LIMIT ${startLimit},${jobPerPage}`;
+                              
                                         con.query(selectQuery, (err, data) => {
 
-                                            response.render("admin", { data: data ,message:request.flash('message')});
+                                            response.render("admin", { data: data ,message:request.flash('message'),page, jobPerPage, startLimit, totalPages});
 
                                         })
                                     }
@@ -203,7 +204,7 @@ exports.about = (req, res) => {
         res.sendFile(staticpage);
     }
     else {
-        res.render('signin');
+        res.render('signin')
     }
 }
 
@@ -214,7 +215,24 @@ exports.logout = (req, res) => {
 }
 exports.search = (req, res) => {
 
-    res.redirect('/');
+    var Query = "SELECT COUNT(*) FROM job";
+    con.query(Query, function (err, data) {
+    let Count = data[0]["COUNT(*)"];
+    let page = 1;
+    let jobPerPage = 10;
+    let startLimit = (page - 1) * jobPerPage;
+    let totalPages = Math.ceil(Count / jobPerPage);
+
+
+
+    let selectQuery = `Select * from job where JOBNAME like "%${req.body.JOBSEARCH}%"`;
+    con.query(selectQuery, (err, data) => {
+        res.render("search", { data: data })
+                                         
+    })
+    })
+
+   
 }
 exports.showaddjob = (req, res) => {
     res.render('addjob');
@@ -348,8 +366,7 @@ con.query(query,(err,data)=>
 {
 
  var query =`INSERT INTO comments(Blog_ID, Comment, User_email,rating) VALUES ('${req.params.id}','${req.body.Comment}','${data[0].Email}','${req.body.rating}')`;
-//var query =`INSERT INTO comments(Blog_ID, Comment, User_email) VALUES ('${req.params.id}','${req.body.Comment}','${data[0].Email}')`;
- 
+
 con.query(query,(err,data)=>
 {
    
@@ -394,6 +411,114 @@ exports.verifycode= (req,res)=>
         }
     
 }
+exports.register=(req,res)=>
+{
+    res.render("register");
+}
+exports.postregister=(req,res)=>
+{
+    var FNAME=req.body.FNAME;
+    var LNAME=req.body.LNAME;
+    var EMAIL =req.body.Email;
+    var date =req.body.DOB;
+    var pwd =req.body.Password;
+    var ques =req.body.SecurityQ;
+  var q= ` INSERT INTO user( FNAME, LNAME, DOB, Password, Email, register, user_session_id, role, SecurityQues) VALUES  ('${FNAME}','${LNAME}','${date}','${pwd}','${EMAIL}','false','','USER','${ques}')`
+   con.query(q,(err,data)=>
+   {
+res.redirect("/");
+   });
+};
+
+exports.ManageUser = (req,res)=>
+{
+    var query ="Select * from user";
+    con.query(query,(err,data)=>
+    {
+        
+        res.render("USER",{data:data});
+    })
+}
+exports.security= (req,res)=>
+{
+ var query =`Select SecurityQues from user where Email = ${req.body.email}`;
+ con.query(query,(err,data)=>
+ {
+
+     if(req.body.forgetAnswer == data[0].SecurityQues) 
+     {
+        res.redirect("/resetpasword");
+     } 
+     else
+     {
+        res.redirect("/reset");
+     }
+ })
+ 
+ 
+
+}
+
+exports.reset=(req,res)=>
+{
+    req.session.email=req.body.email;
+    var mailOptions = {
+        from: "talentedpak008@gmail.com",
+        to: req.body.email,
+        subject: "Reset Link",
+          html: '<p>Click <a href="http://localhost:3000/forgetpwd">here</a> to reset your password</p>'
+      }
+   
+    
+    mailTransporter.sendMail(mailOptions);
+    res.redirect("/");
+}
+exports.resetpwd=(req,res)=>
+{
+    
+    
+    res.render("reset");
+}
+exports.pwdreset=(req,res)=>
+{
+   var query =   ` UPDATE user SET Password='${req.body.password}' WHERE Email = "${req.session.email}"`
+ con.query(query,(err,data)=>
+ {
+    res.redirect("/");
+ })
+    
+   
+}
+exports.latest =(req,res)=>
+{
+    var Query = "SELECT COUNT(*) FROM job";
+    con.query(Query, function (err, data) {
+    let Count = data[0]["COUNT(*)"];
+    let page = 1;
+    let jobPerPage = 10;
+    let startLimit = (page - 1) * jobPerPage;
+    let totalPages = Math.ceil(Count / jobPerPage);
+
+
+
+    let selectQuery = `SELECT * from  job LIMIT ${startLimit},${jobPerPage} `;
+    con.query(selectQuery, (err, data) => {
+        res.render("latest", { data: data, page, jobPerPage, startLimit, totalPages,message:req.flash('message') })
+                                         
+    })
+})
+     
+}
+exports.reply=(req,res)=>
+{
+    var query ="Select * from review";
+    con.query(query,(err,data)=>
+    {
+        res.render("reply",{data:data});
+        
+    })
+}
+
 
 function generate()
 {
