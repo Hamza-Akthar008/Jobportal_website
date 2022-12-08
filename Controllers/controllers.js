@@ -5,6 +5,7 @@ const fs = require('fs');
 const staticpage = path.join(__dirname, "../public", "about.html");
 const deleteimg =path.join(__dirname,"../public/databaseimg/")
 const nodemailer = require('nodemailer');
+var session=null;
 let mailTransporter = nodemailer.createTransport({
     service:"gmail",
     auth: {
@@ -68,7 +69,7 @@ function homedata(req, res) {
 
 
 exports.signin = function (req, res) {
-    if (req.session.user_role) {
+    if (session) {
         found = true;
         homedata(req, res);
     }
@@ -105,7 +106,7 @@ exports.home = function (request, response) {
 
                         request.session.user_role = data[count].role;
                         request.session.user_email = data[count].Email;
-
+session= request.session;
                         var register = data[count].register;
 
                         var query = "SELECT COUNT(*) FROM job";
@@ -199,22 +200,25 @@ exports.home = function (request, response) {
 
 
 exports.about = (req, res) => {
-    if (req.session.user_role) {
+    if (session) {
 
         res.sendFile(staticpage);
     }
     else {
-        res.render('signin')
+        res.redirect('/')
     }
 }
 
 exports.logout = (req, res) => {
   
     req.session.destroy();
+    session=null;
     res.redirect("/");
 }
 exports.search = (req, res) => {
 
+    if(session)
+    {
     var Query = "SELECT COUNT(*) FROM job";
     con.query(Query, function (err, data) {
     let Count = data[0]["COUNT(*)"];
@@ -232,12 +236,20 @@ exports.search = (req, res) => {
     })
     })
 
-   
+}
+else
+{
+    res.redirect("/");
+}  
 }
 exports.showaddjob = (req, res) => {
     res.render('addjob');
 }
 exports.addjob = (req, res) => {
+    if(session)
+    {
+
+    
     var JOBNAME = req.body.JOBNAME;
     var JOBTPYE = req.body.JOBTYPE;
     var CATEGORY = req.body.CATEGORY;
@@ -258,7 +270,15 @@ req.flash('message','Job Added Succesfully');
             res.redirect("/");        }
     })
 }
+else
+{
+    res.redirect("/");
+}
+}
+
 exports.delete = (req, res) => {
+    if(session)
+{
     console.log(req.params.id);
     var query=`Select * from job Where ID = "${req.params.id}"`
     con.query(query,(err,result)=>
@@ -281,8 +301,18 @@ con.query(query, (error, result) => {
 })
    
 }
+else
+{
+    res.redirect("/");
+}
+   
+}
 
 exports.edit = (req, res) => {
+    if(session)
+    {
+
+    
     var query = "Select * FROM job WHERE ID =" + `"` + req.params.id + `"`;
     con.query(query, (error, data) => {
         if (error) throw error
@@ -293,7 +323,14 @@ exports.edit = (req, res) => {
         }
     })
 }
+else
+{
+    res.redirect("/");
+}
+}
 exports.editdata = (req, res) => {
+    if(session)
+    {
     var JOBNAME = req.body.JOBNAME;
     var JOBTPYE = req.body.JOBTYPE;
     var CATEGORY = req.body.CATEGORY;
@@ -308,10 +345,17 @@ exports.editdata = (req, res) => {
         req.flash('message','Job Edited Succesfully');
         res.redirect('/');
       })
+    }
+    else
+    {
+        res.redirect("/");
+    }
 }
 
 exports.blog = (req, res) => {
 
+    if(session)
+    {
     var query ="Select * from blog";
     con.query(query,(err,data)=>
     {
@@ -323,11 +367,15 @@ exports.blog = (req, res) => {
         })
     })
     
-    
+}else
+{
+    res.redirect("/");
+}
     }
 
     exports.rating = (req,res)=>
     {
+
  var query=  ` UPDATE blog SET rating='${req.body.rating}' where Blog_ID = '${req.params.id}'`
    con.query(query,(err,data)=>
    {
@@ -432,12 +480,18 @@ res.redirect("/");
 
 exports.ManageUser = (req,res)=>
 {
+    if(session)
+    {
     var query ="Select * from user";
     con.query(query,(err,data)=>
     {
         
         res.render("USER",{data:data});
     })
+    }else
+    {
+        res.redirect("/");
+    }
 }
 exports.security= (req,res)=>
 {
@@ -518,8 +572,31 @@ exports.reply=(req,res)=>
         
     })
 }
-
-
+exports.replyreview =(req,res)=>
+{
+    var mailOptions = {
+        from: "talentedpak008@gmail.com",
+        to: req.params.email,
+        subject: "Review",
+          html: 'Thank You for Your kind Review'
+      }
+   
+    
+    mailTransporter.sendMail(mailOptions);
+    res.redirect("/");
+}
+exports.apply =(req,res)=>
+{
+    res.render("apply",{data:req.params.id});
+}
+exports.postapply =(req,res)=>
+{
+    var query= `INSERT INTO cv( FNAME, LNAME, Contact, CV, Experience,JOBID) VALUES ('${req.body.FNAME}','${req.body.LNAME}','${req.session.user_email}','${req.body.CV}','${req.body.Experience}','${req.params.id}')`;
+    con.query(query,(err,data)=>
+    {
+res.redirect("/");
+    })
+}
 function generate()
 {
     var min = 100000;
