@@ -11,11 +11,7 @@
     <title>Admin Panel</title>
 </head>
 <body>
-  <% if(message!="") {%>
-    <div class="alert alert-success"> 
-      <%=message%>
-    </div>
-    <%}%>
+ 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark background">
     <div class="container">
       
@@ -26,6 +22,9 @@
       </button>
       <div class="collapse navbar-collapse navmain" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item navmain">
+                <a class="btn btn-lg btn-outline-primary" class="nav-link active" aria-current="page" href="/">Back to Admin</a>
+              </li>
           <li class="nav-item navmain">
             <a class="btn btn-lg btn-outline-primary" class="nav-link active" aria-current="page" href="/addjob">Add Job</a>
           </li>
@@ -34,9 +33,6 @@
           </li>
           <li class="nav-item navmain">
             <a class="btn btn-lg btn-outline-danger" class="nav-link active" aria-current="page" href="/manageuser">Manage User</a>
-          </li>
-          <li class="nav-item navmain">
-            <a class="btn btn-lg btn-outline-danger" class="nav-link active" aria-current="page" href="/reply">Reply to Review</a>
           </li>
           </ul>
           <form method="Post" action="/signout">
@@ -63,71 +59,50 @@
       
 </div>
 
+<section class="intro">
+    <div class="gradient-custom-1 h-100">
+      <div class="mask d-flex align-items-center h-100">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="table-responsive bg-white">
+                <table class="table mb-0">
+                  <thead>
+                    <tr>  <th scope="col">   </th>
+                      <th scope="col">Review NO</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Review</th>
+                   </tr>
+                  </thead>
+                  <tbody>
+                    <% data.forEach(data=> { %>
 
-
-
-<% data.forEach(data=> { %>
-    <div class="container mt-5">
-      
-      <div class="row mt-2 g-1">
-        <div class="col-md-12">
-          <div class="card p-2">
-            <div class="text-right"> <small>
-               
-              </small> </div>
-
-            <div class="text-center mt-2 p-3">  <span
-                class="d-block font-weight-bold">
-                
-                <div class="container card mt-4" style="width: 18rem;">
-                  <div class="card-body">
-                    <h5 class="card-title"> <%= data.JOBNAME %></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"> <%= data.JOBTYPE %></h6>
-                    <p class="card-text"> <%= data.PUBLISHER %>,  <%= data.CATEGORY %></p>
-                    <a href="#" class="card-link" style="text-decoration:none;" >  <%= data.CITY %> </a>
-                    <a href="#" class="card-link" style="text-decoration:none;"><%= data.DATE %></a>
-                  </div>
-                </div>
-                 
-              </span>
-              <div class="d-flex flex-row align-items-center justify-content-center"> <i class="fa fa-map-marker"></i>
-                <small class="ml-1">
-                
-                </small> </div>
-                <div class="d-flex justify-content-between mt-3"> <span> 
-                  </span> 
-              <a href="/delete/<%= data.ID %>" class="btn btn-lg btn-outline-primary">Delete</a>
-                  <!-- Modal -->
-                   </div>
-                  </span> 
-                <a href="/edit/<%= data.ID %>" class="btn btn-lg btn-outline-primary">Edit</a>
-                    <!-- Modal -->
-                     </div>
-                       
+                        <tr>
+                            <th scope="row" style="color: #666666;"><%=data.ID%></th>
+                            <td><%=data.reviewid%></td>
+                            <td><%=data.review%></td>
+                            <td><%=data.Email%></td>
+                            <td><a href="/replyreview/<%=data.Email%>"></a>reply</td>
+                         </tr>
+                   
+                        <% }) %>
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <% }) %>
-    <nav aria-label="Page navigation">
-      <ul class="pagination d-flex justify-content-center mt-5">
-        <li class="page-item <%=(page==1)?`disabled`:``%>">
-          <a class="page-link" href="/?page=<%=(page==1)?`1`:`${page-1}`%>" tabindex="-1">Previous</a>
-        </li>
-      <% for(let pageCount=1; pageCount<=totalPages; pageCount++){ %>
-      <%if(pageCount==page) {%>
-        <li class="page-item active">
-          <a class="page-link" href="#"><%= pageCount%><span class="sr-only">(current)</span></a>
-        </li>
-      <%}%>
-      <%}%>
-      <li class="page-item <%=(page==totalPages)?`disabled`:``%>">
-        <a class="page-link" href="/?page=<%=(page==totalPages)?`totalPages`:`${Number(page)+1}`%>">Next</a>
-      </li>
-   
-    </ul>
-  </nav>
+  </section>
+ 
+
+
+
+
+
 <!-- Remove the container if you want to extend the Footer to full width. -->
 <div class="container-fluid mt-5">
   <!-- Footer -->

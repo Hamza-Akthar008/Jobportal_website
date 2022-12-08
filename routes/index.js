@@ -1,11 +1,13 @@
 const express = require('express');
 const routes = express.Router();
-const path = require('path');
+
 const multer =require('multer');
 
 const controller =require("../Controllers/controllers.js");
 var user_email_address;
 var fn="";
+const path =require("path");
+const staticpage = path.join(__dirname, "../public", "chat.html");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public/databaseimg");
@@ -38,79 +40,22 @@ routes.get('/signin/verify',(req,res)=>controller.verify(req,res));
 routes.post('/signin/verify',(req,res)=>controller.verifycode(req,res));
 routes.post('/rating/:id',(req,res)=>controller.rating(req,res));
 routes.post('/review/:review',(req,res)=>controller.review(req,res));
-// routes.post("/pinverify",(req,res)=>
-// {
-//     if(code==req.body.name)
-//     {
-        
-//         console.log(code +"  "+req.body.name);
-//         var query=`UPDATE user SET register = 'True'  WHERE Email= '${user_email_address}'`;
-//        // res.send(query);
-//         con.query(query,(err,data)=>
-//         {
-//             if(err)
-//             {
-//                 throw err;
-//             }
-//             else
-//             homedata(req,res);
-//         });
-
-//     }
-// })
-// routes.get("/newuser",(req,res)=>{
-//     res.render("newuser");
-// })
-// routes.post("/newuser",(req,res)=>
-// {
-//     var email=req.body.email;
-//     var password =req.body.password;
-//     var query=`INSERT INTO user (Password, Email,register) VALUES ('${password}','${email}','false')`;
-//     con.query(query,(err,data)=>
-//     {
-
-//         res.render("signin");
-//     })
-// })
-// routes.get("/password",(req,res)=>
-// {
-    
-//    res.send("Reset Link Sent");
-   
-// })
-// routes.get("/reset",(req,res)=>
-// {
-//     res.render("forgetpassword");
-   
-    
-// })
-// routes.post("/reset",(req,res)=>
-// {
-//     var query=`UPDATE user SET password = '${req.body.password}'  WHERE Email= 'f200319@cfd.nu.edu.pk'`;
-//     con.query(query,(err,data)=>
-//     {
-// res.render("signin");
-//     })
-// })
-// routes.get("/forgetpassword",(req,res)=>
-// {
-//     res.render("forgetpassword");
-// })
-// routes.get('/home', (req, res) => {
-
-//     if(code ==req.body.name)
-//     {
-        
-//       homedata(req,res);
-
-// }
-// else{
-//     res.render("pinverificaton");
-// }
-// })
-
-
-
-
-  
-module.exports = routes; 
+routes.get('/register',(req,res)=>controller.register(req,res));
+routes.post('/register',upload.none(),(req,res)=>controller.postregister(req,res));
+routes.get('/forget',(req,res)=>controller.forget(req,res));
+routes.get('/manageuser',(req,res)=>controller.ManageUser(req,res));
+routes.get("/forgetpwd",(req,res)=>controller.security(req,res))
+routes.post("/forgetpwd",(req,res)=>controller.postsecurity(req,res))
+routes.get("/reset",(req,res)=>controller.resetpwd(req,res));
+routes.post("/reset",(req,res)=>controller.reset(req,res));
+routes.get("/resetpasword",(req,res)=>controller.pwdreset(req,res));
+routes.get("/latest",(req,res)=>controller.latest(req,res));
+routes.get("/replyreview/:email",(req,res)=>controller.replyreview(req,res))
+routes.get('/chat',(req,res)=>
+{
+    res.sendFile(staticpage);
+})
+routes.get("/apply/:id",(req,res)=>controller.apply(req,res));
+routes.post("/apply/:id",upload.single("CV"),(req,res)=>controller.postapply(res,res));
+routes.get("/reply",(req,res)=>controller.reply(req,res));
+module.exports=routes;
